@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Dashboard from './components/Dashboard';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import withAuthorization from './components/Helpers/withAuthorization';
+import withOnlyGuests from './components/Helpers/withOnlyGuests';
 class App extends Component {
   render() {
     return (
@@ -13,7 +14,7 @@ class App extends Component {
           <Fragment>
             <Header />
             <Switch>
-              <Route path="/signup" component={Signup} />
+              <Route path="/signup" component={withOnlyGuests(Signup)} />
               <Route path="/sign-in" component={SignIn} />
               <Route path="/dashboard" component={withAuthorization(Dashboard)} />
             </Switch>
