@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { isEmail } from 'validator';
 import { signUpUserOnCognito } from '../actions/User';
 import { connect } from 'react-redux';
-import ClipLoader from 'react-spinners/ClipLoader';
+import Loading from './Loading';
+import FieldError from './FieldError';
+import Error from './Error';
 class Signup extends Component {
   state = {
     email: '',
@@ -65,18 +67,9 @@ class Signup extends Component {
     const { signingUp, signingUpError, signingUpSuccess } = this.props;
     return (
       <div className="container">
-        {signingUp &&
-          (<div style={{ position: 'absolute', top: 0, left: '0', zIndex: '1000', display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh' }}>
-            <ClipLoader
-              sizeUnit={"px"}
-              size={150}
-              color={'#123abc'}
-              loading={signingUp}
-            />
-          </div>
-          )}
+        {signingUp && <Loading />}
         <h1>Sign Up</h1>
-        {signingUpError && <p style={{ border: "1px solid #d50000", padding: '2% 3%', color: '#b71c1c', backgroundColor: '#ffcdd2' }}>{signingUpError}</p>}
+        {signingUpError && <Error message={signingUpError} />}
         {signingUpSuccess && <p style={{ border: "1px solid #004d40", color: "#004d40", padding: '2% 3%', backgroundColor: '#e0f2f1' }}>Signed up! We sent an email to you,Please confirm your email address:)</p>}
         {!this.props.signingUpSuccess && (<form className="col s12">
           <div className="row">
@@ -144,7 +137,7 @@ class Signup extends Component {
   }
 }
 
-const FieldError = ({ message }) => <span style={{ display: 'block', color: 'red', fontSize: '.8rem', fontWeight: '600' }}>{message}</span>;
+
 const mapStateToProps = ({ Auth: { signingUp, signingUpError, signingUpSuccess } }) => ({ signingUp, signingUpSuccess, signingUpError });
 export default connect(
   mapStateToProps,

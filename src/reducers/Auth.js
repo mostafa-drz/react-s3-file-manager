@@ -1,12 +1,21 @@
 import {
   SIGNING_UP,
   SIGN_UP_SUCCESS,
-  SIGN_UP_ERROR
+  SIGN_UP_ERROR,
+  SIGNING_IN,
+  SIGN_IN_ERROR,
+  SIGN_IN_SUCCESS,
+  GETING_CURRENT_SESSION,
+  GETING_CURRENT_SESSION_SUCCESS,
+  GETING_CURRENT_SESSION_ERROR
 } from '../actions/types';
 export default function Auth(state = {
   signingUp: false,
   signingUpError: null,
-  signingUpSuccess: false
+  signingUpSuccess: false,
+  signingIn: false,
+  signingInError: null,
+  signingInSuccess: false
 }, action) {
   switch (action.type) {
     case SIGNING_UP:
@@ -23,6 +32,38 @@ export default function Auth(state = {
       return {
         ...state,
         signingUpError: action.error
+      }
+    case SIGNING_IN:
+      return {
+        ...state,
+        signingIn: action.status
+      }
+    case SIGN_IN_SUCCESS:
+      return {
+        ...state,
+        signingInSuccess: true
+      }
+    case SIGN_IN_ERROR:
+      return {
+        ...state,
+        signingInError: action.error
+      }
+    case GETING_CURRENT_SESSION:
+      return {
+        ...state,
+        getingSession: action.status
+      }
+    case GETING_CURRENT_SESSION_SUCCESS:
+      return {
+        ...state,
+        isAuthorized: true,
+        session: action.session
+      }
+    case GETING_CURRENT_SESSION_ERROR:
+      return {
+        state,
+        isAuthorized: false,
+        session: null
       }
     default:
       return state;

@@ -7,9 +7,11 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import reduxThunk from 'redux-thunk';
 import reducers from './reducers';
 import { initalizeAWS } from './utils/AWS';
+import { isUserAuthenticated } from './actions/User';
 initalizeAWS();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducers, {}, composeEnhancers(applyMiddleware(reduxThunk)));
+store.dispatch(isUserAuthenticated());
 ReactDOM.render(
   <Provider store={store}>
     <App />
