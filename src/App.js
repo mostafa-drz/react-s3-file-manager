@@ -2,7 +2,9 @@ import React, { Component, Fragment } from 'react';
 import Signup from './components/Signup';
 import SignIn from './components/SignIn';
 import Header from './components/Header';
+import Dashboard from './components/Dashboard';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import withAuthorization from './components/Helpers/withAuthorization';
 class App extends Component {
   render() {
     return (
@@ -13,6 +15,7 @@ class App extends Component {
             <Switch>
               <Route path="/signup" component={Signup} />
               <Route path="/sign-in" component={SignIn} />
+              <Route path="/dashboard" component={withAuthorization(Dashboard)} />
             </Switch>
           </Fragment>
         </BrowserRouter>

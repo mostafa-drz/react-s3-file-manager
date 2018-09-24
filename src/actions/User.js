@@ -8,7 +8,8 @@ import {
   GETING_CURRENT_SESSION,
   GETING_CURRENT_SESSION_SUCCESS,
   GETING_CURRENT_SESSION_ERROR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  IS_USER_AUTHENTICATED
 } from './types';
 import {
   Auth
@@ -55,13 +56,17 @@ export const signInUserOnCognito = ({
       type: SIGNING_IN,
       status: true
     });
-    Auth.signIn(email, password).then((resp) => {
+    Auth.signIn(email, password).then(() => {
       dispatch({
         type: SIGNING_IN,
         status: false
       });
       dispatch({
         type: SIGN_IN_SUCCESS
+      });
+      dispatch({
+        type: IS_USER_AUTHENTICATED,
+        isUserAuthenticated: true
       });
     }).catch((error) => {
       dispatch({
@@ -72,33 +77,49 @@ export const signInUserOnCognito = ({
         type: SIGN_IN_ERROR,
         error: error.message
       });
+      dispatch({
+        type: IS_USER_AUTHENTICATED,
+        isUserAuthenticated: false
+      });
     })
   }
 }
 
 export const isUserAuthenticated = () => {
   return dispatch => {
-    dispatch({
-      type: GETING_CURRENT_SESSION,
-      status: true
-    });
-    Auth.currentSession().then((session) => {
+    return new Promise((resolve, reject) => {
       dispatch({
         type: GETING_CURRENT_SESSION,
-        status: false
+        status: true
       });
-      dispatch({
-        type: GETING_CURRENT_SESSION_SUCCESS,
-        session
-      });
-    }).catch((error) => {
-      dispatch({
-        type: GETING_CURRENT_SESSION,
-        status: false
-      });
-      dispatch({
-        type: GETING_CURRENT_SESSION_ERROR,
-        error: error.message
+      Auth.currentSession().then((session) => {
+        dispatch({
+          type: GETING_CURRENT_SESSION,
+          status: false
+        });
+        dispatch({
+          type: GETING_CURRENT_SESSION_SUCCESS,
+          session
+        });
+        dispatch({
+          type: IS_USER_AUTHENTICATED,
+          isUserAuthenticated: true
+        });
+        return resolve();
+      }).catch((error) => {
+        dispatch({
+          type: GETING_CURRENT_SESSION,
+          status: false
+        });
+        dispatch({
+          type: GETING_CURRENT_SESSION_ERROR,
+          error: error.message
+        });
+        dispatch({
+          type: IS_USER_AUTHENTICATED,
+          isUserAuthenticated: false
+        });
+        return reject();
       });
     })
   }
@@ -110,6 +131,10 @@ export const logoutUser = () => {
       Auth.signOut().then(() => {
         dispatch({
           type: LOGOUT_USER
+        });
+        dispatch({
+          type: IS_USER_AUTHENTICATED,
+          isUserAuthenticated: false
         });
         window.location.reload();
         return resolve();

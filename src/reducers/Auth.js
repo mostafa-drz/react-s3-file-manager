@@ -8,7 +8,8 @@ import {
   GETING_CURRENT_SESSION,
   GETING_CURRENT_SESSION_SUCCESS,
   GETING_CURRENT_SESSION_ERROR,
-  LOGOUT_USER
+  LOGOUT_USER,
+  IS_USER_AUTHENTICATED
 } from '../actions/types';
 import {
   logoutUser
@@ -46,7 +47,6 @@ export default function Auth(state = {
       return {
         ...state,
         signingInSuccess: true,
-        isAuthorized: true
       }
     case SIGN_IN_ERROR:
       return {
@@ -61,19 +61,21 @@ export default function Auth(state = {
     case GETING_CURRENT_SESSION_SUCCESS:
       return {
         ...state,
-        isAuthorized: true,
         session: action.session
+      }
+    case IS_USER_AUTHENTICATED:
+      return {
+        ...state,
+        isAuthorized: action.isUserAuthenticated
       }
     case GETING_CURRENT_SESSION_ERROR:
       return {
         state,
-        isAuthorized: false,
         session: null
       }
     case LOGOUT_USER:
       return {
         ...state,
-        isAuthorized: false,
         sesssion: null,
       }
     default:
