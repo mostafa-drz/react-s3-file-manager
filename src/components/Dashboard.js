@@ -1,8 +1,12 @@
 import React from 'react';
-
+import NewFile from './NewFile';
+import FilesList from './FilesList';
 const Dashboard = () => {
   return (
-    <div className="container">Here is dashboard man...</div>
+    <div className="container">
+      <NewFile />
+      <FilesList />
+    </div>
   );
 }
 
