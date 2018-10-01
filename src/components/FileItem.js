@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
-const FileItem = ({ name, description }) => (
-  <FileItemContainer>
-    <span style={{ fontWeight: '600' }}>{name}</span>
-    <p>{description}</p>
-  </FileItemContainer>
-)
+import FileItemTools from './FileItemTools';
+import FileItemEditMode from './FileItemEditMode';
+class FileItem extends Component {
+  state = {
+    editMode: false
+  }
+
+  toggleMode = () => {
+    this.setState((prevState) => ({ editMode: !prevState.editMode }));
+  }
+  render() {
+    const { fileName, fileDescription, fileId } = this.props;
+    const { editMode } = this.state;
+    return (
+      editMode ? <FileItemEditMode name={fileName} description={fileDescription} fileId={fileId} onEditDone={this.toggleMode} />
+        :
+        <FileItemContainer>
+          <span style={{ fontWeight: '600' }}>{fileName}</span>
+          <p>{fileDescription}</p>
+          <FileItemTools onToggleMode={this.toggleMode} />
+        </FileItemContainer>
+    )
+  }
+}
 
 const FileItemContainer = styled.div`
   display: flex;

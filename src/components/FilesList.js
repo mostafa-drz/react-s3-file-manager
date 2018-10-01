@@ -15,8 +15,8 @@ class FilesList extends Component {
         {isFetchingFiles && <Loading />}
         {error && <Error message={error} />}
         <h2 style={{ fontSize: '1.4rem', fontWeight: '600', marginTop: '0' }}>Uploaded Files</h2>
-        {files && <div>
-          {files.map((file) => <FileItem {...file} />)}
+        {files && Object.keys(files).length > 0 && <div>
+          {Object.keys(files).map((fileId) => <FileItem {...files[fileId]} />)}
         </div>}
       </div>
     )

@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { uploadToS3, MAX_FILE_SIZE, submitNewFileDetails } from '../utils/AWS';
+import { MAX_FILE_SIZE } from '../utils/AWS';
 import Error from './Error';
 import Success from './Success';
 import Loading from './Loading';
+import { connect } from 'react-redux';
+import { uploadNewFile } from '../actions/Files';
 class NewFile extends Component {
   constructor(props) {
     super(props);
@@ -33,14 +35,12 @@ class NewFile extends Component {
     const { name, description } = this.state;
     if (this.file) {
       this.setState({ loading: true });
-      uploadToS3(this.file).then((key) => {
-        submitNewFileDetails({ name, description, fileId: key }).then(() => {
-          this.setState({ success: 'File Uploaded successfully', name: '', description: '', error: '', loading: false });
-          this.file = null;
-        }).catch((error) => {
-          this.setState({ error: 'Something went wrong:(', loading: false })
-        })
-      });
+      this.props.uploadNewFile({ file: this.file, description, name }).then(() => {
+        this.setState({ success: 'File Uploaded successfully', name: '', description: '', error: '', loading: false });
+        this.file = null;
+      }).catch((error) => {
+        this.setState({ error: 'Something went wrong:(', loading: false })
+      })
     } else {
       this.setState({ error: 'No file to upload' });
       return;
@@ -78,4 +78,4 @@ const NewFileForm = styled.form`
   padding: 2% 3%;
 `
 
-export default NewFile;
+export default connect(null, { uploadNewFile })(NewFile);
