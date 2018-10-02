@@ -33,7 +33,6 @@ export const uploadToS3 = (file) => {
     }
     const filename = `${Date.now()}-${file.name}`;
     Storage.vault.put(filename, file, { contentType: file.type }).then((stored) => {
-      console.log(stored);
       resolve(stored.key);
     }).catch((error) => {
       console.log(error);
@@ -51,11 +50,23 @@ export const submitNewFileDetails = ({ name, description, fileId }) => {
         fileId
       }
     }).then((resp) => {
-      console.log('succed', resp);
       resolve();
     }).catch((error) => {
       console.log(error);
       reject(error);
     })
   });
+}
+
+
+export const deleteFileFromS3 = (fileId) => {
+  return new Promise((resolve, reject) => {
+    Storage.remove(fileId, { level: 'private' }).then(resolve).catch((error) => { reject({ error: error.message }) });
+  });
+}
+
+export const deleteFileDetails = (fileId) => {
+  return new Promise((resolve, reject) => {
+    API.del('files', `/files/${fileId}`).then(resolve).catch((error) => { reject({ error: error.message }) });
+  })
 }

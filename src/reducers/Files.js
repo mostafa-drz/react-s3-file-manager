@@ -1,4 +1,4 @@
-import { GETTING_USER_FILES, GETTING_USER_FILES_ERROR, GETTING_USER_FILES_SUCCESS, UPDATING_FILE_DETAIL_SUCCESS, UPLOADING_FILE_SUCCESS } from '../actions/types';
+import { GETTING_USER_FILES, GETTING_USER_FILES_ERROR, GETTING_USER_FILES_SUCCESS, UPDATING_FILE_DETAIL_SUCCESS, UPLOADING_FILE_SUCCESS, DELETING_FILE_SUCCESS } from '../actions/types';
 
 export default function Files(state = {}, action) {
   switch (action.type) {
@@ -12,6 +12,18 @@ export default function Files(state = {}, action) {
       return { ...state, files: { ...state.files, [action.updated.fileId]: action.updated } }
     case UPLOADING_FILE_SUCCESS:
       return { ...state, files: { ...state.files, [action.uploaded.fileId]: action.uploaded } }
+    case DELETING_FILE_SUCCESS:
+      return {
+        ...state, files: Object.keys(state.files).reduce((accu, key) => {
+          if (key !== action.fileId) {
+            return {
+              ...accu,
+              [key]: state['files'][key]
+            }
+          }
+          return { ...accu }
+        }, {})
+      }
     default:
       return state;
   }

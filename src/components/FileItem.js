@@ -19,7 +19,7 @@ class FileItem extends Component {
         <FileItemContainer>
           <span style={{ fontWeight: '600' }}>{fileName}</span>
           <p>{fileDescription}</p>
-          <FileItemTools onToggleMode={this.toggleMode} />
+          <FileItemTools onToggleMode={this.toggleMode} fileId={fileId} />
         </FileItemContainer>
     )
   }

@@ -50,7 +50,7 @@ class NewFile extends Component {
   render() {
     const { name, description, error, success, loading } = this.state;
     return (
-      <div class="row">
+      <div className="row">
         <NewFileForm>
           {error && <Error message={error} />}
           {success && <Success message={success} />}
