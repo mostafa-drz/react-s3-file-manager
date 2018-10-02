@@ -9,7 +9,7 @@ import withOnlyGuests from './components/Helpers/withOnlyGuests';
 class App extends Component {
   render() {
     return (
-      <div className="container" style={{ backgroundColor: '#e3f2fd', width: '100%', height: '100%', minWidth: '100vw', minHeight: '100vh', margin: '0' }}>
+      <div className="container" style={{ backgroundColor: '#b3e5fc', width: '100%', height: '100%', minWidth: '100vw', minHeight: '100vh', margin: '0' }}>
         <BrowserRouter>
           <Fragment>
             <Header />

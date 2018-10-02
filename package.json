@@ -20,6 +20,10 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "aws s3 sync build/ s3://yazd-innovation-file-cloud --delete",
+    "post-deploy": "aws cloudfront create-invalidation --distribution-id E1QFXT94715MSI --paths /* && aws cloudfront create-invalidation --distribution-id EIZ6VSZSS49G1 --paths /*",
+    "full-deploy": "npm run predeploy && npm run deploy && npm run post-deploy"
   }
 }
